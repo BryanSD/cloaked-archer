@@ -1,4 +1,5 @@
 import json
+import sys
 
 import bottle
 from bottle import delete
@@ -8,25 +9,27 @@ from bottle import response
 from bottle import request
 from bottle import route
 from bottle import view
+from stevedore import driver
 
 from model import ToDo
 
 
-from driver_memory import MemoryDriver
-driver = MemoryDriver()
+mgr = driver.DriverManager('cloaked_archer.db_drivers', sys.argv[1],
+                           invoke_on_load=True)
+db_driver = mgr.driver
 
 
 @route('/')
 @view('index')
 def index():
     """Load index.html with current to-do items"""
-    todos = driver.get_all()
+    todos = db_driver.get_all()
     return dict(todos=todos)
 
 
 @get('/todo/<id:int>')
 def todo_get(id):
-    t = driver.get(id)
+    t = db_driver.get(id)
     return json.dumps(dict(id=t.id, title=t.title, description=t.description))
 
 
@@ -34,20 +37,20 @@ def todo_get(id):
 def todo_get_all():
     """Returns JSON of all to-do items"""
     todos_dict = [dict(id=t.id, title=t.title, description=t.description)
-                  for t in driver.get_all()]
+                  for t in db_driver.get_all()]
     return json.dumps(todos_dict)
 
 
 @put('/todo')
 def todo_put():
     todo = ToDo(request.json['title'], request.json['description'])
-    driver.insert(todo)
+    db_driver.insert(todo)
     response.status = 201
 
 
 @delete('/todo/<id:int>')
 def todo_delete(id):
-    if driver.delete(id):
+    if db_driver.delete(id):
         response.status = 204
     response.status = 404
 
