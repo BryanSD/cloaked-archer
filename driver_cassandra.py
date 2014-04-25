@@ -44,3 +44,4 @@ class CassandraDriver(base_driver.BaseDriver):
         _id = uuid.UUID(id)
         query = 'DELETE FROM todos WHERE id = %s'
         self._session.execute(query, (_id,))
+        return True

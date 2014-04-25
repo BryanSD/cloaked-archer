@@ -25,8 +25,17 @@
             <strong data-bind="text: title"> </strong> (<span data-bind="text: id"> </span>)
             <br />
             <span data-bind="text: description"> </span>
+            <br />
+            <a href="#" class="deleteButton" data-bind="attr: { todoid: id }, click: deleteme">Delete</a>
         </li>
     </ol>
+</div>
+<div style="margin-top: 50px">
+    Title: <input id='addTitle' class="test" type="text" />
+    <br />
+    Description: <input id='addDescription' type="text" />
+    <br />
+    <a id="addButton" href="#">Add To-Do</a>
 </div>
 
 <script type="text/javascript">
@@ -49,7 +58,33 @@
     viewModel = new ViewModel(null)
     ko.applyBindings(viewModel)
     doGet()
-</script
+
+    $('#addButton').click(function() {
+        $.ajax({
+            url: '/todo',
+            type: 'PUT',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({ title: $('#addTitle').val(),
+                    description: $('#addDescription').val()}),
+            processData: false});
+    });
+
+    function deleteme(element) {
+        $.ajax({
+            url: '/todo/' + element.id,
+            type: 'DELETE'
+        })
+    }
+
+    $('.deleteButton').click(function() {
+        console.log('test')
+        alert('hi');
+        // $.ajax({
+        //     url: '/todo' + 
+        // })
+    });
+</script>
 
 </body>
 
