@@ -20,7 +20,7 @@ mgr = driver.DriverManager('cloaked_archer.db_drivers', sys.argv[1],
 db_driver = mgr.driver
 
 config = ConfigParser.ConfigParser()
-config.read('app.config')
+config.read('app.cfg')
 host = config.get('archer', 'host')
 port = config.get('archer', 'port')
 

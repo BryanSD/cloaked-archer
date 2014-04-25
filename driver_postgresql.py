@@ -12,16 +12,17 @@ class PostgreSQLDriver(base_driver.BaseDriver):
 
     def __init__(self):
         config = ConfigParser.ConfigParser()
+        config.read('app.cfg')
         db =       config.get('postgresql', 'database')
         user =     config.get('postgresql', 'user')
-        password = config.get('postgresql', 'password')
+        #password = config.get('postgresql', 'password')
         host =     config.get('postgresql', 'host')
         port =     config.get('postgresql', 'port')
 
         self.conn = psycopg2.connect(
             dbname=db,
             user=user,
-            password=password,
+            #password=password,
             host=host,
             port=port
         )

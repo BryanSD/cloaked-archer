@@ -12,6 +12,7 @@ class CassandraDriver(base_driver.BaseDriver):
 
     def __init__(self):
         config = ConfigParser.ConfigParser()
+        config.read('app.cfg')
         host = config.get('cassandra', 'host')
         db = cluster.Cluster([host])
         self._session = db.connect('todos')
