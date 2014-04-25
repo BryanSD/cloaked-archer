@@ -30,13 +30,14 @@ def index():
 @get('/todo/<id>')
 def todo_get(id):
     t = db_driver.get(id)
-    return json.dumps(dict(id=t.id, title=t.title, description=t.description))
+    d = dict(id=str(t.id), title=t.title, description=t.description)
+    return json.dumps(d)
 
 
 @get('/todo')
 def todo_get_all():
     """Returns JSON of all to-do items"""
-    todos_dict = [dict(id=t.id, title=t.title, description=t.description)
+    todos_dict = [dict(id=str(t.id), title=t.title, description=t.description)
                   for t in db_driver.get_all()]
     return json.dumps(todos_dict)
 
