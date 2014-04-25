@@ -22,7 +22,7 @@
     </ol>
     <ol id="todo_knockout" data-bind="foreach: todos">
         <li>
-            <strong data-bind="text: title"> </strong> (<span data-bind="text: id"> </span>)
+            <strong data-bind="text: title"> </strong>
             <br />
             <span data-bind="text: description"> </span>
             <br />
