@@ -1,3 +1,4 @@
+import ConfigParser
 import sys
 import uuid
 
@@ -10,11 +11,19 @@ from model import ToDo
 class PostgreSQLDriver(base_driver.BaseDriver):
 
     def __init__(self):
-        db = sys.argv[2]
-        user = sys.argv[3]
-        password = sys.argv[4]
+        config = ConfigParser.ConfigParser()
+        db =       config.get('postgresql', 'database')
+        user =     config.get('postgresql', 'user')
+        password = config.get('postgresql', 'password')
+        host =     config.get('postgresql', 'host')
+        port =     config.get('postgresql', 'port')
+
         self.conn = psycopg2.connect(
-            "dbname=%s user=%s password=%s" % (db, user, password)
+            dbname=db,
+            user=user,
+            password=password,
+            host=host,
+            port=port
         )
 
     def get(self, id):
@@ -41,7 +50,7 @@ class PostgreSQLDriver(base_driver.BaseDriver):
         cursor = self.conn.cursor()
         cursor.execute(
             "INSERT INTO todos (id, title, description) VALUES (%s, %s, %s);",
-            (uuid.uuid4(), todo.title, todo.description)
+            (uuid.uuid4().hex, todo.title, todo.description)
         )
         self.conn.commit()
         cursor.close()
