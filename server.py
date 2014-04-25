@@ -1,3 +1,4 @@
+import ConfigParser
 import json
 import sys
 
@@ -18,6 +19,10 @@ mgr = driver.DriverManager('cloaked_archer.db_drivers', sys.argv[1],
                            invoke_on_load=True)
 db_driver = mgr.driver
 
+config = ConfigParser.ConfigParser()
+config.read('app.cfg')
+host = config.get('archer', 'host')
+port = config.get('archer', 'port')
 
 @route('/')
 @view('index')
@@ -56,4 +61,4 @@ def todo_delete(id):
     response.status = 404
 
 bottle.debug(True)
-bottle.run(host='localhost', port=8080, reloader=True)
+bottle.run(host=host, port=port, reloader=True)

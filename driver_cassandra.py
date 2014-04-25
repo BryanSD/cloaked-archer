@@ -1,3 +1,4 @@
+import ConfigParser
 import sys
 import uuid
 
@@ -10,7 +11,10 @@ import model
 class CassandraDriver(base_driver.BaseDriver):
 
     def __init__(self):
-        db = cluster.Cluster([sys.argv[2]])
+        config = ConfigParser.ConfigParser()
+        config.read('app.cfg')
+        host = config.get('cassandra', 'host')
+        db = cluster.Cluster([host])
         self._session = db.connect('todos')
 
     def get(self, id):
