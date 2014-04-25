@@ -1,4 +1,5 @@
 import sys
+import uuid
 
 import psycopg2
 
@@ -9,9 +10,9 @@ from model import ToDo
 class PostgreSQLDriver(base_driver.BaseDriver):
 
     def __init__(self):
-        db = sys.argv[2]#'tododb'
-        user = sys.argv[3]#'john'
-        password = sys.argv[4]#'trumpet'
+        db = sys.argv[2]
+        user = sys.argv[3]
+        password = sys.argv[4]
         self.conn = psycopg2.connect(
             "dbname=%s user=%s password=%s" % (db, user, password)
         )
@@ -39,8 +40,8 @@ class PostgreSQLDriver(base_driver.BaseDriver):
     def insert(self, todo):
         cursor = self.conn.cursor()
         cursor.execute(
-            "INSERT INTO todos (title, description) VALUES (%s, %s);",
-            (todo.title, todo.description)
+            "INSERT INTO todos (id, title, description) VALUES (%s, %s, %s);",
+            (uuid.uuid4(), todo.title, todo.description)
         )
         self.conn.commit()
         cursor.close()
