@@ -27,7 +27,7 @@ def index():
     return dict(todos=todos)
 
 
-@get('/todo/<id:int>')
+@get('/todo/<id>')
 def todo_get(id):
     t = db_driver.get(id)
     return json.dumps(dict(id=t.id, title=t.title, description=t.description))
@@ -48,7 +48,7 @@ def todo_put():
     response.status = 201
 
 
-@delete('/todo/<id:int>')
+@delete('/todo/<id>')
 def todo_delete(id):
     if db_driver.delete(id):
         response.status = 204
