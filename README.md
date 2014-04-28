@@ -60,3 +60,15 @@ PostgreSQL Setup:
 8) Run as:
 
     python server.py postgresql
+
+--------------
+
+Cassandra setup:
+
+1) Mostly follow steps at: http://www.datastax.com/documentation/cassandra/2.0/cassandra/initialize/initializeMultipleDS.html
+
+A few notes...
+Firewall ports that need to be open: 7000 &amp; 9042
+Step 4: Change cluster_name, seeds, listen_address, rpc_address
+Step 5: endpoint_snitch: GossipingPropertyFileSnitch &amp; modify cassandra-rackdc.properties
+Step 6: Skip
